@@ -13,7 +13,19 @@ client.on('message', msg => {
 
   // If message is hello, post hello too
   if (msg.content === 'hello') {
-    msg.channel.sendMessage('Hello to you too, fellow !')
+    msg.channel.sendMessage('Whaaaaaaaaar')
+  } else if (msg.content === 'goodbye') {
+    msg.channel.sendMessage('whaaaaarha')
+  } else if (msg.content.startsWith('!twitter')) {
+
+  } else if (msg.content.startsWith('!spotify')) {
+
+  } else if (msg.content.startsWith('!youtube')) {
+
+  } else if (msg.content.startsWith('!translate')) {
+
+  } else if (msg.content.startsWith('!weather')) {
+
   }
 })
 
