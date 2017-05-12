@@ -17,7 +17,9 @@ client.on('message', msg => {
   } else if (msg.content === 'goodbye') {
     msg.channel.sendMessage('whaaaaarha')
   } else if (msg.content.startsWith('!twitter')) {
-
+    if (msg.content === '!twitter help') {
+      msg.channel.sendMessage('Whaaar /n use \'!twitter send\' to send a tweet and use \'!twitter look\' to see data ')
+    }
   } else if (msg.content.startsWith('!spotify')) {
 
   } else if (msg.content.startsWith('!youtube')) {
