@@ -6,8 +6,7 @@ var translate = require('@google-cloud/translate')({
   key: 'AIzaSyA8VsE9eKIxKXSHPJq0x9sI4rYinB48UWE'
 })
 
-var hearTwitter = false
-var sendChannelTwitter
+var sendChannelTwitter = null
 
 var TwitterPackage = require('twitter') // get twitter library
 var secret = {// sets my twitter app information
@@ -49,12 +48,13 @@ client.on('message', msg => {
       msg.channel.sendMessage('Wharrrg Sent arrrg')
     }
     if (msg.content === '!twitterHear') {
-      hearTwitter = true
       sendChannelTwitter = msg.channel
+      msg.channel.sendMessage('Whaar This channel will hear twitter new messages containing @bot_test_labs')
     }
     if (msg.content === '!twitterHelp') {
-      msg.channel.sendMessage('Whaaar  use \'!twitterPost Yourmessage\' to send a tweet ; I am \'bot_test_labs\' on Twitter ')
-      msg.channel.sendMessage('Whaaar  This bot will notify you when someone uses @bot_test_labs ')
+      msg.channel.sendMessage('I am \'bot_test_labs\' on Twitter ')
+      msg.channel.sendMessage('Whaaar  use \'!twitterPost Yourmessage\' to send a tweet')
+      msg.channel.sendMessage('write once \'!twitterHear\' so that This bot will notify you when someone uses @bot_test_labs ')
     }
   } else if (msg.content.startsWith('!spotify')) {
     var searchItem = ''
@@ -236,11 +236,13 @@ client.on('message', msg => {
 
 client.login(config.token)
 
-Twitter.stream('statuses/filter', {track: '#TechKnightsDemo'}, function (stream) {
+Twitter.stream('statuses/filter', {track: '@bot_test_labs'}, function (stream) {
   // ... when we get tweet data...
   stream.on('data', function (tweet) {
     // print out the text of the tweet that came in
-    msg.channel.sendMessage(tweet.text)
+    if (sendChannelTwitter != null) {
+      sendChannelTwitter.sendMessage(' Whaaaarg Incoming message from twitter : ' + tweet.text)
+    }
   })
 
   // ... when we get an error...
