@@ -1,6 +1,9 @@
 const Discord = require('discord.js')
 const config = require('./config.js')
 const client = new Discord.Client()
+var translate = require('@google-cloud/translate')({
+  key: 'AIzaSyA8VsE9eKIxKXSHPJq0x9sI4rYinB48UWE'
+})
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.username}!`)
@@ -23,7 +26,14 @@ client.on('message', msg => {
   } else if (msg.content.startsWith('!youtube')) {
 
   } else if (msg.content.startsWith('!translate')) {
-
+    var texteatraduire = msg.content.split('!translate')
+    translate.translate(texteatraduire[1], 'en', function (err, translation) {
+      if (!err) {
+        msg.channel.sendMessage(translation)
+      } else {
+        msg.channel.sendMessage(err)
+      }
+    })
   } else if (msg.content.startsWith('!weather')) {
 
   }
