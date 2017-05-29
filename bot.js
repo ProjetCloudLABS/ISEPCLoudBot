@@ -31,9 +31,10 @@ client.on('message', msg => {
   } else if (msg.content.startsWith('!twitter')) {
     if (msg.content.startsWith('!twitterPost')) {
       msg.channel.sendMessage('Whaar Sending arggg')
-      msg.channel.sendMessage(msg.content.substr(13, msg.content.length))
+      var messageContent = msg.content.substr(13, msg.content.length)
+      msg.channel.sendMessage(messageContent.substr(0, 138)) // limit the message to 140 chars
       // sends the tweet :
-      Twitter.post('statuses/update', {status: msg.content.substr(13, msg.content.length)},
+      Twitter.post('statuses/update', {status: messageContent.substr(0, 138)}, // limit the message to 140 chars
         function (error, tweet, response) {
           if (error) {
             console.log(error)
