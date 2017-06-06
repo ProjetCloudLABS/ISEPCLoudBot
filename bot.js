@@ -5,7 +5,6 @@ var getreq = require('request')
 var translate = require('@google-cloud/translate')({
   key: 'AIzaSyA8VsE9eKIxKXSHPJq0x9sI4rYinB48UWE'
 })
-
 var sendChannelTwitter = null
 
 var TwitterPackage = require('twitter') // get twitter library
@@ -20,7 +19,6 @@ var Twitter = new TwitterPackage(secret)
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.username}!`)
 })
-
 
 client.on('message', msg => {
   // Check if the message has been posted in a channel where the bot operates
@@ -231,7 +229,32 @@ client.on('message', msg => {
       }
     })
   } else if (msg.content.startsWith('!weather')) {
-
+    var apiKey = 'a77909704b3376d3191160db31e65494'
+    var city = ''
+    if (msg.content.startsWith('!weatherToday')) {
+      city = msg.content.substr(14, msg.content.length)
+      getreq({ url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, json: true }, function (error, response, dataWeather) {
+        if (error) {
+          // oh no !!!
+          msg.channel.sendMessage(city + ' ? .... Is that even a real city ?')
+        } else {
+          msg.channel.sendMessage('in ' + dataWeather.name + ' there is ' + dataWeather.weather[0].main)
+        }
+      })
+    } else if (msg.content.startsWith('!weatherFuture')) {
+      city = msg.content.substr(15, msg.content.length)
+      getreq({ url: 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apiKey, json: true }, function (error, response, dataWeather) {
+        if (error) {
+          // oh no !!!
+          msg.channel.sendMessage(city + ' ? .... Is that even a real city ? Well anyway there is an error...')
+        } else {
+          msg.channel.sendMessage('in ' + dataWeather.city.name)
+          dataWeather.list.forEach(function (element) {
+            msg.channel.sendMessage('at ' + element.dt_txt + ' there is ' + element.weather[0].main)
+          }, this)
+        }
+      })
+    }
   }
 })
 
