@@ -18,7 +18,6 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.username}!`)
 })
 
-
 client.on('message', msg => {
   // Check if the message has been posted in a channel where the bot operates
   // and that the author is not the bot itself
@@ -68,9 +67,13 @@ client.on('message', msg => {
       getreq({ url: 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, json: true }, function (error, response, dataWeather) {
         if (error) {
           // oh no !!!
-          msg.channel.sendMessage(city + ' ? .... Is that even a real city ?')
+          msg.channel.sendMessage(' connection error ')
         } else {
-          msg.channel.sendMessage('in ' + dataWeather.name + ' there is ' + dataWeather.weather[0].main)
+          if (dataWeather.name) {
+            msg.channel.sendMessage('in ' + dataWeather.name + ' there is ' + dataWeather.weather[0].main)
+          } else {
+            msg.channel.sendMessage(city + ' ? .... Is that even a real city ?')
+          }
         }
       })
     } else if (msg.content.startsWith('!weatherFuture')) {
@@ -78,12 +81,77 @@ client.on('message', msg => {
       getreq({ url: 'http://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apiKey, json: true }, function (error, response, dataWeather) {
         if (error) {
           // oh no !!!
-          msg.channel.sendMessage(city + ' ? .... Is that even a real city ? Well anyway there is an error...')
+          msg.channel.sendMessage(' connection error ')
         } else {
-          msg.channel.sendMessage('in ' + dataWeather.city.name)
-          dataWeather.list.forEach(function (element) {
-            msg.channel.sendMessage('at ' + element.dt_txt + ' there is ' + element.weather[0].main)
-          }, this)
+          if (dataWeather.city.name) {
+            msg.channel.sendMessage('in ' + dataWeather.city.name)
+            dataWeather.list.forEach(function (element) {
+              msg.channel.sendMessage('at ' + element.dt_txt + ' there is ' + element.weather[0].main)
+            }, this)
+          } else {
+            msg.channel.sendMessage(city + ' ? .... Is that even a real city ? Well anyway there is an error...')
+          }
+        }
+      })
+    }
+  } else if (msg.content.startsWith('!pokemon')) {
+    // pokemon transformation and evolution
+    if (msg.content.startsWith('!pokemonTf')) {
+      // we want to transform our avatar into a pokemon
+      var pokemon = msg.content.substr(11, msg.content.length)
+      getreq({ url: 'http://pokeapi.co/api/v2/pokemon/' + pokemon, json: true }, function (error, response, dataPokemon) {
+        if (error) {
+          // oh no !!!
+          msg.channel.sendMessage(' connection error ')
+        } else {
+          if (dataPokemon.name) {
+            client.user.setAvatar(dataPokemon.sprites.front_default)
+            client.user.setUsername(dataPokemon.name)
+            msg.channel.sendMessage('Hello I am ' + dataPokemon.name + ' and I weight ' + dataPokemon.weight + '. I am ' +
+            dataPokemon.height + ' feet tall. My id is ' + dataPokemon.id + '. My main type is ' +
+              dataPokemon.types[0].type.name + '.')
+          } else {
+            msg.channel.sendMessage(pokemon + ' ? .... Is that even a real pokemon ? Well anyway there is an error...')
+          }
+        }
+      })
+    } else if (msg.content.startsWith('!pokemonEv')) {
+      // we want to evolve our pokemon if possible
+      getreq({ url: 'http://pokeapi.co/api/v2/pokemon-species/' + client.user.username, json: true }, function (error, response, dataPokemon) {
+        // load our avatar pokemon infos
+        if (error) {
+          // oh no !!!
+        } else {
+          getreq({ url: dataPokemon.evolution_chain.url, json: true }, function (error, response, dataChain) {
+            // load our avatar pokemon evolution chain
+            if (error) {
+              // oh no !!!
+            } else {
+              // search for a possible evolution
+              var myPokeName = client.user.username
+              var chain = dataChain.chain
+              while (chain || myPokeName === client.user.username) {
+                var pokeName = chain.species.name
+                if (pokeName === client.user.username && chain.evolves_to.length > 0) {
+                  myPokeName = chain.evolves_to[0].species.name
+                }
+                chain = chain.evolves_to[0]
+              }
+              // msg.channel.sendMessage('test ' + myPokeName)
+              getreq({ url: 'http://pokeapi.co/api/v2/pokemon/' + myPokeName, json: true }, function (error, response, dataEvolution) {
+                // load our new pokemon infos
+                if (error) {
+                  // oh no !!!
+                } else {
+                  client.user.setAvatar(dataEvolution.sprites.front_default)
+                  client.user.setUsername(dataEvolution.name)
+                  msg.channel.sendMessage('Hello I am ' + dataEvolution.name + ' and I weight ' + dataEvolution.weight + '. I am ' +
+                  dataEvolution.height + ' feet tall. My id is ' + dataEvolution.id + '. My main type is ' +
+                    dataEvolution.types[0].type.name + '.')
+                }
+              })
+            }
+          })
         }
       })
     }
