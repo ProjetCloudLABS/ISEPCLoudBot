@@ -107,6 +107,9 @@ client.on('message', msg => {
           if (dataPokemon.name) {
             client.user.setAvatar(dataPokemon.sprites.front_default)
             client.user.setUsername(dataPokemon.name)
+            if (dataPokemon.name !== client.user.username) {
+              msg.channel.sendMessage('Sorry you can only change my avatar and username twice every two hours : ask discord why :(')
+            }
             msg.channel.sendMessage('Hello I am ' + dataPokemon.name + ' and I weight ' + dataPokemon.weight + '. I am ' +
             dataPokemon.height + ' feet tall. My id is ' + dataPokemon.id + '. My main type is ' +
               dataPokemon.types[0].type.name + '.')
@@ -130,12 +133,15 @@ client.on('message', msg => {
               // search for a possible evolution
               var myPokeName = client.user.username
               var chain = dataChain.chain
-              while (chain || myPokeName === client.user.username) {
+              while (chain && chain.species && myPokeName === client.user.username) {
                 var pokeName = chain.species.name
                 if (pokeName === client.user.username && chain.evolves_to.length > 0) {
                   myPokeName = chain.evolves_to[0].species.name
                 }
                 chain = chain.evolves_to[0]
+              }
+              if (myPokeName === client.user.username) {
+                msg.channel.sendMessage('I dont have any evolution !')
               }
               // msg.channel.sendMessage('test ' + myPokeName)
               getreq({ url: 'http://pokeapi.co/api/v2/pokemon/' + myPokeName, json: true }, function (error, response, dataEvolution) {
@@ -145,6 +151,9 @@ client.on('message', msg => {
                 } else {
                   client.user.setAvatar(dataEvolution.sprites.front_default)
                   client.user.setUsername(dataEvolution.name)
+                  if (dataEvolution.name !== client.user.username) {
+                    msg.channel.sendMessage('Sorry you can only change my avatar and username twice every two hours: ask discord why :(')
+                  }
                   msg.channel.sendMessage('Hello I am ' + dataEvolution.name + ' and I weight ' + dataEvolution.weight + '. I am ' +
                   dataEvolution.height + ' feet tall. My id is ' + dataEvolution.id + '. My main type is ' +
                     dataEvolution.types[0].type.name + '.')
