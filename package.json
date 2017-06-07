@@ -19,7 +19,7 @@
   "homepage": "https://gitlab.com/pierrick.bignet/cloud-discord-bot#README",
   "dependencies": {
     "discord.js": "^11.1.0",
-    "twitter": "^6.7.0",
+    "twitter": "*",
     "eslint-config-standard": "^10.2.1",
     "node-rest-client-promise": "^2.0.0"
   },
