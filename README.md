@@ -8,7 +8,7 @@
 - !pokemonTf \<english pokemon name>
  changes your bot avatar, name to the pokemon and sends you infos
 - !pokemonEv
- evolves and changes your bot avatar, name to the pokemon and sends you infos
+  evolves and changes your bot avatar, name to the pokemon and sends you infos
 - !weatherToday \<city>
  sends the weather of the given city
 - !weatherFuture \<city>
