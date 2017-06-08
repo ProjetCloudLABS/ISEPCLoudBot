@@ -27,7 +27,7 @@ client.on('message', msg => {
 
   } else if (msg.content.startsWith('!translate')) {
     var split = msg.content.split(' ')
-    var texteatraduire = 12 + split[1].length
+    var texteatraduire = msg.content.substring(12 + split[1].length)
     var langue = split[1]
     translate.translate(texteatraduire, langue, function (err, translation) {
       if (!err) {
