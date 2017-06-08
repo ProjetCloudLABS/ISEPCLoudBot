@@ -26,8 +26,10 @@ client.on('message', msg => {
   } else if (msg.content.startsWith('!youtube')) {
 
   } else if (msg.content.startsWith('!translate')) {
-    var texteatraduire = msg.content.split('!translate')
-    translate.translate(texteatraduire[1], 'en', function (err, translation) {
+    var split = msg.content.split(' ')
+    var texteatraduire = 12 + split[1].length
+    var langue = split[1]
+    translate.translate(texteatraduire, langue, function (err, translation) {
       if (!err) {
         msg.channel.sendMessage(translation)
       } else {
