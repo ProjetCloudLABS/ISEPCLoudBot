@@ -17,7 +17,7 @@
  will notify you when @bot_test_labs is used on twitter
 ### - !twitterPost \<message>
  sends the 140 first characters of the messageto the account bot_test_labs
-### - !translate <langue, example : en pour anglais> <texte à traduire>
+### - !translate <language, example : en for english> \<text>
  traduit le texte dans le langage voulu
 ### - !youtubeSearch \<text>
  send the 3 first results
