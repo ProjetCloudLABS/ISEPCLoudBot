@@ -5,25 +5,25 @@
 - Hichem Nouis,
 - Louis Arbaretier
 ##Commands :
-- !pokemonTf <english pokemon name>
+- !pokemonTf \<english pokemon name>
 ###changes your bot avatar, name to the pokemon and sends you infos
 - !pokemonEv
 ###evolves and changes your bot avatar, name to the pokemon and sends you infos
-- !weatherToday <city>
+- !weatherToday \<city>
 ###sends the weather of the given city
-- !weatherFuture <city>
+- !weatherFuture \<city>
 ###sends the weather of the given city for the following 3-5 days
 - !twitterHear
 ###will notify you when @bot_test_labs is used on twitter
-- !twitterPost <message>
+- !twitterPost \<message>
 ###sends the 140 first characters of the messageto the account bot_test_labs
 - !translate <langue, example : en pour anglais> <texte à traduire>
 ###traduit le texte dans le langage voulu
-- !youtubeSearch <text>
+- !youtubeSearch \<text>
 ###send the 3 first results
-- !youtubeVideo <text>
+- !youtubeVideo \<text>
 ###send the 3 first results which are videos
-- !youtubeChannel <text>
+- !youtubeChannel \<text>
 ###send the 3 first results which are channels
-- !youtubePlaylist <text>
-###send the 3 first results which are playlists
+- !youtubePlaylist \<text>
+###send the 3 first results which are playlists###
