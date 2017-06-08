@@ -14,6 +14,55 @@ var secret = {// sets my twitter app information
 }
 var Twitter = new TwitterPackage(secret)
 
+function getWeatherStatus (id) {
+  var result = ''
+  // il y a ....
+  switch (id) {
+    case 200 || 201 || 202 || 210:
+      result = 'un orage avec de la pluie'
+      break
+    case (id < 233 && id >= 211) || 901 || 902 || 965 || 961 || 960:
+      result = 'un orage'
+      break
+    case id < 532 && id >= 300:
+      result = 'de la pluie'
+      break
+    case id < 613 && id >= 600:
+      result = 'de la neige'
+      break
+    case id < 623 && id >= 615:
+      result = 'de la neige et de la pluie'
+      break
+    case (id < 712 && id >= 701) || 741:
+      result = 'du brouillard ou de la fumee'
+      break
+    case 721 || 751 || 731 || 762 || 751 || 761:
+      result = 'de la poussiere ou du sable'
+      break
+    case 781 || 900 || 962 :
+      result = 'une tornade'
+      break
+    case 800 :
+      result = 'un ciel degage'
+      break
+    case id < 805 && id >= 801 :
+      result = 'des nuages'
+      break
+    case 903 :
+      result = 'du froid'
+      break
+    case 904 :
+      result = 'du chaud'
+      break
+    case 905 || (id >= 952 && id < 959):
+      result = 'du vent'
+      break
+    default:
+      result = 'du vent'
+  }
+  return result
+}
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.username}!`)
 })
@@ -70,7 +119,7 @@ client.on('message', msg => {
           msg.channel.sendMessage(' connection error ')
         } else {
           if (dataWeather.name) {
-            msg.channel.sendMessage('in ' + dataWeather.name + ' there is ' + dataWeather.weather[0].main)
+            msg.channel.sendMessage('a ' + dataWeather.name + ' il y a ' + getWeatherStatus(dataWeather.weather[0].id))
           } else {
             msg.channel.sendMessage(city + ' ? .... Is that even a real city ?')
           }
@@ -83,11 +132,13 @@ client.on('message', msg => {
           // oh no !!!
           msg.channel.sendMessage(' connection error ')
         } else {
+          var phrase = ''
           if (dataWeather.city.name) {
-            msg.channel.sendMessage('in ' + dataWeather.city.name)
+            msg.channel.sendMessage('a ' + dataWeather.city.name)
             dataWeather.list.forEach(function (element) {
-              msg.channel.sendMessage('at ' + element.dt_txt + ' there is ' + element.weather[0].main)
+              phrase = phrase + 'le ' + element.dt_txt + ' il y aura ' + getWeatherStatus(element.weather[0].id) + ', '
             }, this)
+            msg.channel.sendMessage(phrase)
           } else {
             msg.channel.sendMessage(city + ' ? .... Is that even a real city ? Well anyway there is an error...')
           }
