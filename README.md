@@ -1,10 +1,10 @@
 # School project for ISEP
-1. Members :
+## 1. Members :
 - Dimitri Baron,
 - Antoine Le Livec,
 - Hichem Nouis,
 - Louis Arbaretier
-2. Commands :
+## 2. Commands :
 - !pokemonTf \<english pokemon name>
 ### changes your bot avatar, name to the pokemon and sends you infos
 - !pokemonEv
@@ -26,4 +26,4 @@
 - !youtubeChannel \<text>
 ### send the 3 first results which are channels
 - !youtubePlaylist \<text>
-### send the 3 first results which are playlists###
+### send the 3 first results which are playlists
