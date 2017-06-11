@@ -23,7 +23,25 @@ client.on('message', msg => {
   } else if (msg.content.startsWith('!twitter')) {
 
   } else if (msg.content.startsWith('!spotify')) {
-    var searchItem = msg.content.substr(9, msg.content.length)
+    var searchItem = ''
+    var searchTrack = false
+    var searchArtist = false
+    var searchAlbum = false
+    if (msg.content.substr(9, 5) === 'titre') {
+      searchTrack = true
+      searchItem = msg.content.substr(15, msg.content.length)
+    } else if (msg.content.substr(9, 7) === 'artiste') {
+      searchArtist = true
+      searchItem = msg.content.substr(17, msg.content.length)
+    } else if (msg.content.substr(9, 5) === 'album') {
+      searchAlbum = true
+      searchItem = msg.content.substr(15, msg.content.length)
+    } else {
+      searchItem = msg.content.substr(9, msg.content.length)
+    }
+    console.log(searchTrack)
+    console.log(searchArtist)
+    console.log(searchAlbum)
     var SpotifyWebApi = require('spotify-web-api-node')
     var spotifyApi = new SpotifyWebApi({
       clientId: '34310d56bc4e479585c09dadc3877a88',
@@ -43,46 +61,60 @@ client.on('message', msg => {
         var artistsIndex = 0
         var albumsIndex = 0
         var resultArray = []
-        while (i < 3) {
-          if (result.body.tracks.total !== 0) {
-            resultArray.push({'type': 'track', 'index': tracksIndex, 'name': result.body.tracks.items[tracksIndex].name})
-            tracksIndex++
-            i++
-          } if (i < 3) {
-            if (result.body.artists.total !== 0) {
+        var limit = 0
+        if (searchTrack) {
+          limit = Math.min(result.body.tracks.items.length, 3)
+          console.log(result.body.tracks.items.length)
+        } else if (searchArtist) {
+          limit = Math.min(result.body.artists.items.length, 3)
+          console.log(result.body.artists.items.length)
+        } else if (searchAlbum) {
+          limit = Math.min(result.body.albums.items.length, 3)
+          console.log(result.body.albums.items.length)
+        } else {
+          limit = Math.min(result.body.tracks.items.length + result.body.artists.items.length + result.body.albums.items.length, 3)
+        }
+        if (limit === 0) {
+          msg.channel.send('aucun résultat')
+        } else {
+          while (i < limit) {
+            if (result.body.tracks.items.length !== 0 && !searchArtist && !searchAlbum) {
+              resultArray.push({'type': 'track', 'index': tracksIndex, 'name': result.body.tracks.items[tracksIndex].name})
+              tracksIndex++
+              i++
+            }
+            if (i < 3 && result.body.artists.items.length !== 0 && !searchTrack && !searchAlbum) {
               resultArray.push({'type': 'artist', 'index': artistsIndex, 'name': result.body.artists.items[artistsIndex].name})
               artistsIndex++
               i++
             }
-          } if (i < 3) {
-            if (result.body.albums.total !== 0) {
+            if (i < 3 && result.body.albums.items.length !== 0 && !searchArtist && !searchTrack) {
               resultArray.push({'type': 'album', 'index': albumsIndex, 'name': result.body.albums.items[albumsIndex].name})
               albumsIndex++
               i++
             }
           }
-        }
-        console.log(resultArray)
-        for (i = 0; i < resultArray.length; i++) {
-          if (resultArray[i].type === 'track') {
-            if (resultArray[i].index === 0) {
-              msg.channel.send('Titre(s) trouvé(s) :')
+          for (i = 0; i < resultArray.length; i++) {
+            if (resultArray[i].type === 'track') {
+              if (resultArray[i].index === 0) {
+                msg.channel.send('Titre(s) trouvé(s) :')
+              }
+              msg.channel.send(resultArray[i].name)
             }
-            msg.channel.send(resultArray[i].name)
-          }
-        } for (i = 0; i < resultArray.length; i++) {
-          if (resultArray[i].type === 'artist') {
-            if (resultArray[i].index === 0) {
-              msg.channel.send('Artiste(s) trouvé(s) :')
+          } for (i = 0; i < resultArray.length; i++) {
+            if (resultArray[i].type === 'artist') {
+              if (resultArray[i].index === 0) {
+                msg.channel.send('Artiste(s) trouvé(s) :')
+              }
+              msg.channel.send(resultArray[i].name)
             }
-            msg.channel.send(resultArray[i].name)
-          }
-        } for (i = 0; i < resultArray.length; i++) {
-          if (resultArray[i].type === 'album') {
-            if (resultArray[i].index === 0) {
-              msg.channel.send('Album(s) trouvé(s) :')
+          } for (i = 0; i < resultArray.length; i++) {
+            if (resultArray[i].type === 'album') {
+              if (resultArray[i].index === 0) {
+                msg.channel.send('Album(s) trouvé(s) :')
+              }
+              msg.channel.send(resultArray[i].name)
             }
-            msg.channel.send(resultArray[i].name)
           }
         }
       })
