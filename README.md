@@ -27,3 +27,14 @@
  send the 3 first results which are channels
 ### - !youtubePlaylist \<text>
  send the 3 first results which are playlists
+### - !spotify \<text>
+ send the 3 first results
+ ### - !spotifytitre \<text>
+ send the 3 first results by titles
+ ### - !spotifyartiste \<text>
+ send the 3 first results by artists 
+ ### - !spotifyalbum \<text>
+ send the 3 first results by album
+ 
+ ## 3. Azure bot link :
+  https://TO COMPLETE
