@@ -20,6 +20,7 @@
   "dependencies": {
     "discord.js": "^11.1.0",
     "twitter": "*",
+    "@google-cloud/translate": "*",
     "eslint-config-standard": "^10.2.1",
     "node-rest-client-promise": "^2.0.0",
     "spotify-web-api-node": "^2.4.0"
