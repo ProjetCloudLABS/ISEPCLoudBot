@@ -37,4 +37,4 @@
  send the 3 first results by album
  
  ## 3. Azure bot link :
-  https://TO COMPLETE
+  http://finalbottest.azurewebsites.net/
