@@ -29,11 +29,11 @@
  send the 3 first results which are playlists
 ### - !spotify \<text>
  send the 3 first results
- ### - !spotifytitre \<text>
+ ### - !spotify titre \<text>
  send the 3 first results by titles
- ### - !spotifyartiste \<text>
+ ### - !spotify artiste \<text>
  send the 3 first results by artists 
- ### - !spotifyalbum \<text>
+ ### - !spotify album \<text>
  send the 3 first results by album
  
  ## 3. Azure bot link :
